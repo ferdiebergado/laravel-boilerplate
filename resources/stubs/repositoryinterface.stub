@@ -1,0 +1,14 @@
+<?php
+
+namespace repository_namespace;
+
+use App\Interfaces\RepositoryInterface;
+
+/**
+ * Interface repository_class
+ * @package repository_namespace
+ */
+interface repository_class extends RepositoryInterface
+{
+
+}

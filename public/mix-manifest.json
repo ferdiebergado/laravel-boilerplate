@@ -1,0 +1,9 @@
+{
+    "/js/app.js": "/js/app.js",
+    "/css/app.css": "/css/app.css",
+    "/js/plugins.js": "/js/plugins.js",
+    "/js/tags.js": "/js/tags.js",
+    "/css/tags.css": "/css/tags.css",
+    "/css/bootstrap-duallistbox.min.css": "/css/bootstrap-duallistbox.min.css",
+    "/js/jquery.bootstrap-duallistbox.min.js": "/js/jquery.bootstrap-duallistbox.min.js"
+}

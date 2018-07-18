@@ -1,0 +1,1 @@
+<button type="submit" class="btn btn-success btn-flat pull-right">{{ __('Submit') }}</button>

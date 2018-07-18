@@ -1,0 +1,37 @@
+
+// Fonts
+// @import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic");
+
+// Variables
+// @import "variables";
+
+// Bootstrap
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
+// Font-awesome
+@import '~font-awesome/scss/font-awesome';
+
+// Ion Icons
+@import '~ionicons/dist/scss/ionicons';
+
+// Admin LTE
+@import '~admin-lte/dist/css/AdminLTE.min.css';
+@import '~admin-lte/dist/css/skins/skin-black.min.css';
+
+// iCheck
+@import '~admin-lte/plugins/iCheck/square/blue.css';
+
+// Input-clear-icon
+@import "~input-clear-icon/input-clear-icon.regular.min.css";
+
+// Datatables
+@import '../jquery-datatable/jquery.dataTables.css';
+// @import "../jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css";
+@import "~datatables.net-bs/css/dataTables.bootstrap.min.css";
+@import "../jquery-datatable/extensions/dataTables.searchHighlight.css";
+
+// .navbar-laravel {
+//   background-color: #fff;
+//   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+// }
