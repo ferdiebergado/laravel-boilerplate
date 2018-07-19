@@ -216,7 +216,7 @@ return [
 
     ],
 
-    'email' => 'ferdiebergado@gmail.com',
-    'author' => env('APP_AUTHOR', 'Ferdinand Saporas Bergado'),
+    'author' => 'Ferdinand Saporas Bergado',
+    'email' =>  'ferdiebergado@gmail.com',
 
 ];
