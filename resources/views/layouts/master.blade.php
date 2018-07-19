@@ -12,7 +12,7 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   
   <title>{{ config('app.name', 'Laravel') }}</title>
-  
+
   <!-- Styles -->
   <link href="{{ mix('css/app.css') }}" rel="stylesheet">
   @stack('styles')
@@ -31,11 +31,11 @@
       
       <header class="main-header">
         <!-- Logo -->
-        <a href="../../index2.html" class="logo">
+        <a href="{{ route('home') }}" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
-          <span class="logo-mini"><b>A</b>LT</span>
+          <span class="logo-mini"><b>{{ strtoupper(substr(config('app.name'), 0, 1)) }}</b></span>
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg"><b>Admin</b>LTE</span>
+          <span class="logo-lg"><b>{{ config('app.name') }}</b></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
@@ -290,23 +290,16 @@
           @if (auth()->user()->hasPermissionTo('list-permissions') || auth()->user()->hasRole('administrator'))
           <li class="{{ Route::currentRouteNamed('admin.permissions.*') ? 'active' : '' }}"><a href="{{ route('admin.permissions.index') }}"><i class="fa fa-shield"></i> {{ __('messages.permissions') }}</a></li>
           @endif
-        </ul>
-        <ul class="treeview-menu">
           @if (auth()->user()->hasRole('user-manager') || auth()->user()->hasRole('administrator'))
           <li class="{{ Route::currentRouteNamed('admin.logins.*') ? 'active' : '' }}"><a href="{{ route('admin.logins.index') }}"><i class="fa fa-lock"></i> {{ __('messages.logins') }}</a></li>
           @endif
-        </ul>
-        @if (auth()->user()->hasRole('administrator'))
-        <ul class="treeview-menu">
+          @if (auth()->user()->hasRole('administrator'))
           <li class="{{ (Route::currentRouteName() === 'admin.info') ? 'active' : '' }}"><a href="{{ route('admin.info') }}"><i class="fa fa-server"></i> {{ __('messages.server') }}</a></li>
-        </ul>
-        <ul class="treeview-menu">
           <li class="{{ (Route::currentRouteName() === 'admin.environment') ? 'active' : '' }}"><a href="{{ route('admin.environment') }}"><i class="fa fa-desktop"></i> {{ __('messages.environment') }}</a></li>
-        </ul>
-<ul class="treeview-menu">
           <li class="{{ (Route::currentRouteName() === 'admin.commands') ? 'active' : '' }}"><a href="{{ route('admin.commands') }}"><i class="fa fa-terminal"></i> {{ __('messages.commands') }}</a></li>
+          <li class="{{ (Route::currentRouteName() === 'admin.tinker') ? 'active' : '' }}"><a href="{{ route('admin.tinker') }}"><i class="fa fa-code"></i> {{ __('messages.tinker') }}</a></li>
+          @endif
         </ul>
-        @endif
       </li>
       @endif
       <li class="treeview">
@@ -393,7 +386,7 @@
   <section class="content">
     <div class="row">
       <div class="col-md-12">
-
+        
         <!-- Default box -->
         <div class="box">
           <div class="box-header with-border">
@@ -435,7 +428,7 @@
   <!-- Create the tabs -->
   <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
     <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-
+    
     <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
   </ul>
   <!-- Tab panes -->

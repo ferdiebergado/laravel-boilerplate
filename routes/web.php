@@ -25,28 +25,31 @@ Auth::routes();
 Route::get('/user/verify/{token}', 'Auth\RegisterController@verifyUser');
 
 // Home
-Route::get('/home', 'HomeController@index')->middleware('active')->name('home');
+Route::get('/home', 'HomeController@index')->middleware(['active', 'prevent_back_history'])->name('home');
 
 // User
 Route::resource('users', 'UserController')->parameters(['users' => 'id'])->only(['show', 'edit', 'update'])->middleware(['active', 'prevent_back_history', 'equaltoid']);
 
 // Admin
 Route::name('admin.')->group(function () {
-    Route::group(['prefix' => 'admin', 'middleware' => 'active', 'prevent_back_history'], function () {
+    Route::group(['prefix' => 'admin', 'middleware' => ['active', 'prevent_back_history']], function () {
 
         // User
         Route::group(['middleware' => ['permission:create-users', 'role:user-manager,administrator']], function () {
             Route::get('users/create', 'UserController@create')->name('users.create');
             Route::post('users', 'UserController@store')->name('users.store');
         });
+
         Route::group(['middleware' => ['permission:list-users', 'role:user-manager,administrator']], function () {
             Route::get('users', 'UserController@index')->name('users.index');
             Route::get('users/{id}', 'UserController@show')->name('users.show');
         });
+
         Route::group(['middleware' => ['permission:edit-users', 'role:user-manager,administrator']], function () {
             Route::get('users/{id}/edit', 'UserController@edit')->name('users.edit');
             Route::match(['PUT', 'PATCH'], 'users/{id}', 'UserController@update')->name('users.update');
         });
+
         Route::delete('users/{id}', 'UserController@destroy')->name('users.destroy')->middleware(['permission:delete-users', 'role:user-manager,administrator'])->name('users.destroy');
 
         // Roles Routes
@@ -62,9 +65,10 @@ Route::name('admin.')->group(function () {
         Route::group(['middleware' => 'role:administrator'], function () {
             Route::get('info', 'AdminController@info')->name('info');
             Route::get('environment', 'AdminController@environment')->name('environment');
-            // Route::get('dependencies', 'AdminController@dependencies')->name('dependencies');
-            Route::view('commands', 'admin.artisan')->name('commands');
+            Route::view('commands', 'admin.artisan')->middleware('auth')->name('commands');
             Route::post('run', 'AdminController@run_command')->name('run_command');
+            Route::view('tinker', 'admin.tinker')->middleware('auth')->name('tinker');
+            Route::post('tinker', 'AdminController@run_tinker')->name('runtinker');
         });
     });
 });

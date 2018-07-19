@@ -11,23 +11,23 @@ class AdminController extends Controller
 {
     private $phpinfoservice;
     private $artisanservice;
-
+    
     public function __construct(PhpInfoService $phpinfo, ArtisanService $artisan)
     {
         $this->middleware('auth');
         $this->phpinfoservice = $phpinfo;
         $this->artisanservice = $artisan;
     }
-
+    
     public function info()
     {
         $phpinfo = $this->phpinfoservice->quick_dev_insights_phpinfo();
         return view('admin.info', compact('phpinfo'));
     }
-
+    
     /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
+    * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+    */
     public static function environment()
     {
         $envs = [
@@ -54,19 +54,23 @@ class AdminController extends Controller
         // $packages = array_merge_recursive($devjs, $js);
         return view('admin.environment', compact('envs', 'dependencies', 'packages'));
     }
-
+    
     public function run_command(Request $request)
     {
         $this->validate($request, [
             'command'   => 'string|nullable'
-        ]);
+            ]);
         $command = $request->command;
         $output = '<p>&gt; artisan ' . $command . ' </p>' . $this->artisanservice->run((string) $command);
         if (request()->wantsJson()) {
             return [
-                'data' => $output
-            ];
+                    'data' => $output
+                ];
         }
         return $output;
+    }
+    public function run_tinker(Request $request)
+    {
+        eval($request->input('c'));
     }
 }

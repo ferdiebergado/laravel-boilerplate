@@ -53,8 +53,11 @@ return [
     'loginssub' => "List of user logins.",
     'server' => "Server Info",
     'serversub' => "Web Server Configuration.",
-    'environment' => "Application Environment",
+    'environment' => "Application",
     'environmentsub' => "Framework, Dependencies and Libraries",
     'commands' => "Artisan Console",
-    'commandssub' => "Run artisan commands."
+    'commandssub' => "Run artisan commands.",
+    'tinker' => "Tinker",
+    'tinkersub' => "Evaluate php code.",
+    'run' => "Run"
 ];
