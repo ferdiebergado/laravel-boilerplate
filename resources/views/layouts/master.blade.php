@@ -528,7 +528,7 @@
               Back End Framework
               <span class="label label-primary pull-right">68%</span>
             </h4>
-            
+
             <div class="progress progress-xxs">
               <div class="progress-bar progress-bar-primary" style="width: 68%"></div>
             </div>
@@ -570,7 +570,7 @@
           </p>
         </div>
         <!-- /.form-group -->
-        
+
         <div class="form-group">
           <label class="control-sidebar-subheading">
             Expose author name in posts
@@ -584,7 +584,7 @@
         <!-- /.form-group -->
         
         <h3 class="control-sidebar-heading">Chat Settings</h3>
-        
+
         <div class="form-group">
           <label class="control-sidebar-subheading">
             Show me as online
@@ -629,7 +629,7 @@
       radioClass: 'iradio_square-blue',
       increaseArea: '20%' /* optional*/
     });
-  })
+  });
 </script>
 @stack('scripts')
 </body>
