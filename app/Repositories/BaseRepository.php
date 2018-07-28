@@ -371,4 +371,8 @@ abstract class BaseRepository implements RepositoryInterface, CriteriaInterface
     {
         return $this->model->getFillable();
     }
+    public function latest($field = 'created_at')
+    {
+        return $this->model->latest($field);
+    }
 }
