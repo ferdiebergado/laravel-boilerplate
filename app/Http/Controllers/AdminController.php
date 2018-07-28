@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\PhpInfoService;
 use App\Services\ArtisanService;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
 
 class AdminController extends Controller
 {
@@ -71,6 +72,13 @@ class AdminController extends Controller
     }
     public function run_tinker(Request $request)
     {
-        eval($request->input('c'));
+        $code = $request->c;
+        try {
+            return eval($code);
+        } catch (\ParseError $e) {
+            return $e->getMessage();
+        } catch (\ErrorException $e) {
+            return $e->getMessage();
+        }
     }
 }
