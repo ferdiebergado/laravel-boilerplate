@@ -18,7 +18,7 @@ class LoginController extends Controller
     public function index()
     {
         // Fetch paginated list of logins based on parameters from the Request (sent by datatables).
-        $logins = $this->login->getByCriteria(new RequestCriteria(request()))->paginate(request()->length);
+        $logins = $this->login->getByCriteria(new RequestCriteria(request()))->latest()->paginate(request()->length);
 
         // Send the response as JSON.
         if (request()->wantsJson()) {
