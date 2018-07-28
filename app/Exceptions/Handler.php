@@ -5,7 +5,9 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\ExceptionReport;
+use App\Mail\ExceptionReportMail;
+use Whoops\Run as Whoops;
+use Whoops\Handler\PrettyPageHandler;
 
 class Handler extends ExceptionHandler
 {
@@ -40,7 +42,12 @@ class Handler extends ExceptionHandler
     public function report(Exception $exception)
     {
         if ($this->shouldReport($exception)) {
-            Mail::to(config('app.email'))->send(new ExceptionReport($exception));
+            $whoops = new Whoops();
+            $whoops->allowQuit(false);
+            $whoops->writeToOutput(false);
+            $whoops->pushHandler(new PrettyPageHandler());
+            $body = $whoops->handleException($exception);
+            Mail::to(config('app.email'))->send(new ExceptionReportMail($body));
         }
         parent::report($exception);
     }
