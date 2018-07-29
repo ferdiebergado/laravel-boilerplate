@@ -7,12 +7,17 @@
             searchHighlight:    true,
             responsive:         true,
             stateSave:          true,
-            paging:             true, 
-            lengthChange:       true, 
-            searching:          true, 
-            ordering:           true, 
+            paging:             true,
+            lengthChange:       true,
+            searching:          true,
+            ordering:           true,
             info:               true,
-            autoWidth:          false,            
+            autoWidth:          false,
+            processing:         true,
+            language:   {
+                loadingRecords: '&nbsp;',
+                processing:     '<div class="spinner"></div>'
+            },
             ajax: {
                 url:    '{{ $datatableroute  }}',
                 data:   function ( d ) {
@@ -35,7 +40,7 @@
                                 {{--  sortMultiple = sortField + ';' + d.columns[d.order[i].column].data;
                                 sortMultipleDir = dir + ';' + d.order[i].dir;  --}}
                                 sortMultiple = d.columns[d.order[i].column].data; 
-                                sortMultipleDir = d.order[i].dir;                                
+                                sortMultipleDir = d.order[i].dir;
                                 firstMultiple = false;
                             } else {
                                 sortMultiple = sortMultiple + ';' + d.columns[d.order[i].column].data;
@@ -46,7 +51,7 @@
                         }
                         i++;
                     }
-                    d.with = '{{ $datatablewith }}';                    
+                    d.with = '{{ $datatablewith }}';
                     d.searchText = d.search.value;
                     d.orderBy = sortField;
                     d.sortedBy = dir;
@@ -55,7 +60,7 @@
                         var url = window.location;
                         var a = $('<a>', { href:url })[0];
                             return a.search.split('=')[1];
-                        };                                    
+                        };
                     },
                     dataFilter: function(data){
                         var json = jQuery.parseJSON( data );
@@ -69,11 +74,11 @@
                 {
                     targets:  {{ $ellipsiscol }},
                     render:   Ellipsis(25, true)
-                }, 
-                {{ $slot }}                        
+                },
+                {{ $slot }}
                 ],
-                columns:    [       
-                {{ $columns }}   
+                columns:    [
+                {{ $columns }}
                 ],
                 order:      [],
                 dom:        'B<"toolbar">frtpil',
@@ -88,9 +93,15 @@
                             dTable.search( this.value ).draw();
                         }
                     });
-                }                
+                }
             });
-            $("div.toolbar").html('{{ $toolbar }}');        
+
+            $("div.toolbar").html(`
+            <button id="btnRefresh" type="button" class="btn btn-sm btn-flat bg-gray pull-right" title="Refresh" style="margin-left: 6px;"><i class="fa fa-refresh"></i></button>
+            `);
+
+            $('#btnRefresh').on('click', function () {
+                dTable.ajax.reload();
+            });
         });
     </script>
-    
