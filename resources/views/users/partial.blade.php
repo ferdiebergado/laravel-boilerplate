@@ -59,6 +59,23 @@
 </div>
 <!-- /EMAIL -->
 
+<!-- OLD PASSWORD -->
+<div class="form-group {{ $errors->has('old_password') ? ' has-error' : '' }}">
+    <label for="old_password" class="col-sm-2 control-label">{{ __('messages.old_password') }}</label>
+    <div class="col-sm-8">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="fa fa-eye-slash"></i></span>
+            <input type="password" class="form-control" placeholder="{{ __('messages.defaultoldpassword') }}"
+                name="old_password" maxlength="150">
+        </div>
+        @if ($errors->has('old_password'))
+        <span class="help-block" role="alert">
+            <strong>{{ $errors->first('old_password') }}</strong>
+        </span> 
+        @endif
+    </div>
+</div>
+
 <!-- PASSWORD -->
 <div class="form-group {{ $errors->has('password') ? ' has-error' : '' }}">
     <label for="password" class="col-sm-2 control-label">{{ __('messages.password') }}</label>
