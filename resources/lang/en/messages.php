@@ -59,5 +59,7 @@ return [
     'commandssub' => "Run artisan commands.",
     'tinker' => "Tinker",
     'tinkersub' => "Evaluate php code.",
-    'run' => "Run"
+    'run' => "Run",
+    'editpermission' => "Edit Permission",
+    'editpermissionsub' => "Edit a user permission."
 ];
