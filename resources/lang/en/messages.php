@@ -61,5 +61,7 @@ return [
     'tinkersub' => "Evaluate php code.",
     'run' => "Run",
     'editpermission' => "Edit Permission",
-    'editpermissionsub' => "Edit a user permission."
+    'editpermissionsub' => "Edit a user permission.",
+    'defaultoldpassword' => "Type your old password to change password.",
+    'old_password' => "Current Password"
 ];
