@@ -17,6 +17,6 @@ class LoginService
      */
     public static function handleDelete($id)
     {
-        return Login::where('user_id', $id)->delete();
+        return Login::withTrashed()->where('user_id', $id)->forceDelete();
     }
 }
