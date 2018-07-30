@@ -4,31 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Criteria\RequestCriteria;
-use App\Interfaces\UserRepositoryInterface as UserRepository;
 use App\Http\Controllers\BaseController;
 use App\Services\RolePermissionService;
 use App\Services\LoginService;
 use Illuminate\Support\Facades\DB;
+use App\Services\UserService;
 
 class UserController extends BaseController
 {
     /**
      * The User Repository Instance.
      *
-     * @var App\Repositories\UserRepository
+     * @var App\Repositories\UserService
      */
-    private $user;
+    private $service;
 
     /**
      * Resolve an instance of the User Repository from the Container.
      * Set the default Middleware.
      *
-     * @param UserRepository $user
+     * @param UserService $service
      */
-    public function __construct(UserRepository $user)
+    public function __construct(UserService $service)
     {
         $this->middleware('auth');
-        $this->user = $user;
+        $this->service = $service;
     }
 
     /**
@@ -38,9 +38,7 @@ class UserController extends BaseController
     */
     public function index()
     {
-        // Fetch paginated list of Users based on parameters from the Request (sent by datatables).
-        $users = $this->user->getByCriteria(new RequestCriteria(request()))->paginate(request()->length);
-
+        $users = $this->service->list(request());
         // Send the response as JSON.
         if (request()->wantsJson()) {
             return response()->json([
@@ -60,7 +58,7 @@ class UserController extends BaseController
     */
     public function create()
     {
-        $user = $this->user->makeModel();
+        $user = $this->service->create();
         return view('users.create', compact('user'));
     }
 
@@ -72,17 +70,11 @@ class UserController extends BaseController
     */
     public function store(UserRequest $request)
     {
-        DB::beginTransaction();
-        try {
-            $user = $this->user->create($request->only($this->user->getFillable()));
-            RolePermissionService::handleSave($request, $user);
-            DB::commit();
-            session()->flash('status', __('messages.success'));
+        $saved = $this->service->store($request);
+        if ($saved) {
             return redirect()->route($this->prefix.'users.index');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->back()->withErrors($e->getMessage());
         }
+        return redirect()->back()->withErrors($e->getMessage());
     }
 
     /**
@@ -93,7 +85,7 @@ class UserController extends BaseController
     */
     public function show($id)
     {
-        $user = $this->user->findOrFail($id);
+        $user = $this->service->show($id);
         return view('users.show', compact('user'));
     }
 
@@ -105,7 +97,7 @@ class UserController extends BaseController
     */
     public function edit($id)
     {
-        $user = $this->user->with(['verifyUser'])->findOrFail($id);
+        $user = $this->service->edit($id);
         return view('users.edit', compact('user'));
     }
 
@@ -116,30 +108,10 @@ class UserController extends BaseController
     * @param  integer  $id
     * @return \Illuminate\Http\Response
     */
-    public function update(UserRequest $request, $id)
+    public function update(UserRequest $request, $id, $method = null)
     {
-        $user = $this->user->findOrFail($id);
-        $verified = ($request->filled('verified')) ? 1 : 0;
-        $active = ($request->filled('active')) ? 1 : 0;
-        $attributes = array_merge($request->only($this->user->getFillable()), ['verified' => $verified], ['active' => $active]);
-        if (empty($request->password)) {
-            $attributes = array_except($attributes, 'password');
-        }
-        DB::beginTransaction();
-        try {
-            if ($user->update($attributes)) {
-                RolePermissionService::handleSave($request, $user, 'sync');
-                DB::commit();
-                $request->session()->flash('status', __('messages.updated'));
-                if ($this->isAdminRequest()) {
-                    return redirect()->back();
-                }
-                return redirect()->back();
-            }
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->back();
-        }
+        $this->service->update($request, $id, $method);
+        return redirect()->back();
     }
 
     /**
@@ -150,22 +122,7 @@ class UserController extends BaseController
     */
     public function destroy($id)
     {
-        $user = $this->user->findOrFail($id);
-        if (auth()->user()->id !== $id) {
-            DB::beginTransaction();
-            try {
-                if (LoginService::handleDelete($id)) {
-                    if ($user->delete()) {
-                        DB::commit();
-                        session()->flash('status', __('messages.deleted'));
-                        return back();
-                    }
-                }
-            } catch (\Exception $e) {
-                DB::rollback();
-                return back()->withErrors($e->getMessage());
-            }
-        }
+        $user = $this->service->delete($id);
         return redirect()->back();
     }
 }
