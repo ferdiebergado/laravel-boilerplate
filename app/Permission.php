@@ -10,9 +10,10 @@ class Permission extends BaseModel
         'name',
         'slug'
     ];
-    
+
     public function roles()
     {
-        return $this->belongsToMany('App\Role', 'roles_permissions');
+        // return $this->belongsToMany('App\Role', 'roles_permissions');
+        return $this->belongsToMany('App\Role')->using('App\RolePermission');
     }
 }

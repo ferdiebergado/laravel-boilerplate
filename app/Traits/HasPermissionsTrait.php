@@ -4,17 +4,20 @@ namespace App\Traits;
 
 use Illuminate\Database\Eloquent\Collection;
 use App\Permission;
+use App\Role;
 
 trait HasPermissionsTrait
 {
     public function roles()
     {
-        return $this->belongsToMany('App\Role', 'users_roles');
+        // return $this->belongsToMany('App\Role', 'users_roles');
+        return $this->belongsToMany('App\Role')->using('App\UserRole');
     }
 
     public function permissions()
     {
-        return $this->belongsToMany('App\Permission', 'users_permissions');
+        // return $this->belongsToMany('App\Permission', 'users_permissions');
+        return $this->belongsToMany('App\Permission')->using('App\UserPermission');
     }
 
     public function hasRole(...$roles)
