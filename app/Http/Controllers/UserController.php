@@ -9,6 +9,7 @@ use App\Services\RolePermissionService;
 use App\Services\LoginService;
 use Illuminate\Support\Facades\DB;
 use App\Services\UserService;
+use App\User;
 
 class UserController extends BaseController
 {
@@ -38,6 +39,7 @@ class UserController extends BaseController
     */
     public function index()
     {
+        $this->authorize('list', User::class);
         $users = $this->service->list(request());
         // Send the response as JSON.
         if (request()->wantsJson()) {
@@ -58,6 +60,7 @@ class UserController extends BaseController
     */
     public function create()
     {
+        $this->authorize('create', User::class);
         $user = $this->service->create();
         return view('users.create', compact('user'));
     }
@@ -85,6 +88,7 @@ class UserController extends BaseController
     */
     public function show($id)
     {
+        $this->authorize('view', User::class);
         $user = $this->service->show($id);
         return view('users.show', compact('user'));
     }
@@ -97,6 +101,7 @@ class UserController extends BaseController
     */
     public function edit($id)
     {
+        $this->authorize('edit', User::class);
         $user = $this->service->edit($id);
         return view('users.edit', compact('user'));
     }
@@ -122,6 +127,7 @@ class UserController extends BaseController
     */
     public function destroy($id)
     {
+        $this->authorize('delete', User::class);
         $user = $this->service->delete($id);
         return redirect()->back();
     }

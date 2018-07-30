@@ -9,12 +9,37 @@ class UsersPolicy
 {
     use HandlesAuthorization;
 
-    public function before(User $user, Model $model)
+    public function before(User $user, $ability)
     {
         if ($user->hasRole('administrator') || $user->hasRole('user-manager')) {
             return true;
         }
     }
+
+    /**
+     * Determine whether the user can list the model.
+     *
+     * @param  \App\User  $user
+     * @param  \App\User  $model
+     * @return mixed
+     */
+    public function list(User $user, User $model)
+    {
+        return $user->hasPermissionTo('list-users');
+    }
+
+    /**
+     * Determine whether the user can edit the model.
+     *
+     * @param  \App\User  $user
+     * @param  \App\User  $model
+     * @return mixed
+     */
+    public function edit(User $user, User $model)
+    {
+        return $model->id === $user->id || $user->hasPermissionTo('edit-users');
+    }
+
     /**
      * Determine whether the user can view the model.
      *
@@ -24,7 +49,7 @@ class UsersPolicy
      */
     public function view(User $user, User $model)
     {
-        return $model->id === $user->id || $user->hasRole('show-users');
+        return $model->id === $user->id || $user->hasPermissionTo('show-users');
     }
 
     /**
@@ -35,7 +60,7 @@ class UsersPolicy
      */
     public function create(User $user)
     {
-        return $user->hasRole('create-users');
+        return $user->hasPermissionTo('create-users');
     }
 
     /**
@@ -47,7 +72,7 @@ class UsersPolicy
      */
     public function update(User $user, User $model)
     {
-        return $model->id === $user->id || $user->hasRole('edit-users');
+        return $model->id === $user->id || $user->hasPermissionTo('edit-users');
     }
 
     /**
@@ -59,6 +84,6 @@ class UsersPolicy
      */
     public function delete(User $user, User $model)
     {
-        return $user->hasRole('delete-users');
+        return $user->hasPermissionTo('delete-users');
     }
 }
