@@ -7,11 +7,12 @@ use App\BaseModel;
 class Login extends BaseModel
 {
     protected $userstamping = false;
-
+    protected $dates = [
+        'date_created'
+    ];
     protected $appends = [
         'date_created'
     ];
-
     protected $searchable = [
         'user.name',
         'user_agent'
@@ -24,7 +25,10 @@ class Login extends BaseModel
 
     public function getDateCreatedAttribute()
     {
-        $created = $this->created_at;
-        return $created->diffForHumans() . ' ' . $created;
+        if (!empty($this->created_at)) {
+            $created = $this->created_at;
+            return $created->diffForHumans() . ' ' . $created;
+        }
+        return $this;
     }
 }
