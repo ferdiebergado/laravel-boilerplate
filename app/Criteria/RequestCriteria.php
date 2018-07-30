@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Criteria\Criteria;
 use App\Interfaces\RepositoryInterface as Repository;
+use Illuminate\Support\Facades\Cache;
 
 /**
 * Class RequestCriteria
@@ -41,7 +42,9 @@ class RequestCriteria extends Criteria
      */
     protected function getTableColumns($model)
     {
-        return $model->getConnection()->getSchemaBuilder()->getColumnListing($model->getTable());
+        return Cache::remember('tablecolumns_'.get_class($model), 60, function () use ($model) {
+            return $model->getConnection()->getSchemaBuilder()->getColumnListing($model->getTable());
+        });
     }
 
     protected function validateRequest()
