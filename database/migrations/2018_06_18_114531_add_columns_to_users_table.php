@@ -29,6 +29,8 @@ class AddColumnsToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('verified');
+            $table->dropColumn('verified_at');
+            $table->dropColumn('active');
         });
     }
 }
