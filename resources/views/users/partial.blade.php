@@ -59,6 +59,7 @@
 </div>
 <!-- /EMAIL -->
 
+@unless (Route::is('*.create'))
 <!-- OLD PASSWORD -->
 <div class="form-group {{ $errors->has('old_password') ? ' has-error' : '' }}">
     <label for="old_password" class="col-sm-2 control-label">{{ __('messages.old_password') }}</label>
@@ -71,10 +72,12 @@
         @if ($errors->has('old_password'))
         <span class="help-block" role="alert">
             <strong>{{ $errors->first('old_password') }}</strong>
-        </span> 
+        </span>
         @endif
     </div>
 </div>
+<!-- /OLD PASSWORD -->
+@endunless
 
 <!-- PASSWORD -->
 <div class="form-group {{ $errors->has('password') ? ' has-error' : '' }}">
