@@ -15,6 +15,7 @@
 
   <!-- Styles -->
   <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+  <script type="text/javascript" src="{{ asset('js/pace.min.js') }}"></script>
   @stack('styles')
   
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -623,6 +624,15 @@
 <script src="{{ mix('js/app.js') }}"></script>
 <script type="text/javascript">
   $(document).ready(function () {
+    paceOptions = {
+      ajax: true, 
+      document: true, 
+      eventLag: true, 
+      elements: {
+        selectors: ['.my-page']
+      }
+    };  
+    Pace.start();
     $('.sidebar-menu').tree();
     $('input').iCheck({
       checkboxClass: 'icheckbox_square-blue',
@@ -631,7 +641,7 @@
     });
   });
   // To make Pace works on Ajax calls
-  $(document).ajaxStart(function () {
+  {{--  $(document).ajaxStart(function () {
     Pace.restart()
   })
   $('.ajax').click(function () {
@@ -640,7 +650,7 @@
         $('.ajax-content').html('<hr>Ajax Request Completed !')
       }
     })
-  })
+  });  --}}
 </script>
 @stack('scripts')
 </body>
