@@ -18,7 +18,8 @@
 try {
     window.$ = window.jQuery = require('jquery');
     require('bootstrap');
-    require('admin-lte')
+    require('admin-lte');
+    require('admin-lte/plugins/pace/pace.min.js');
     // require('admin-lte/dist/js/adminlte.min.js');
     require('slimscroll');
     require('fastclick');

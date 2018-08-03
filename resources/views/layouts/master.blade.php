@@ -621,7 +621,7 @@
 <!-- ./wrapper -->
 <!-- Scripts -->
 <script src="{{ mix('js/app.js') }}"></script>
-<script>
+<script type="text/javascript">
   $(document).ready(function () {
     $('.sidebar-menu').tree();
     $('input').iCheck({
@@ -630,6 +630,17 @@
       increaseArea: '20%' /* optional*/
     });
   });
+  // To make Pace works on Ajax calls
+  $(document).ajaxStart(function () {
+    Pace.restart()
+  })
+  $('.ajax').click(function () {
+    $.ajax({
+      url: '#', success: function (result) {
+        $('.ajax-content').html('<hr>Ajax Request Completed !')
+      }
+    })
+  })
 </script>
 @stack('scripts')
 </body>
