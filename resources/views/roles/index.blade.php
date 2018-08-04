@@ -74,14 +74,14 @@ permissions
     render: function(data, type, row) {
         btnclass = "btn btn-sm btn-flat";
         baseurl = "{!! $url !!}";
-        viewurl = `<a class="${btnclass} btn-info" href="${baseurl}/${data}" title="{{ __('View') }}"><i class="fa fa-eye"></i></a> `;
+        {{--  viewurl = `<a class="${btnclass} btn-info" href="${baseurl}/${data}" title="{{ __('View') }}"><i class="fa fa-eye"></i></a> `;  --}}
         editurl = `<a class="${btnclass} btn-primary" href="${baseurl}/${data}/edit" title="{{ __('Edit') }}"><i class="fa fa-edit"></i></a> `;
         delurl = `<form id="del-form-${data}" method="POST" action="${baseurl}/${data}" style="display: inline;">
             {{ method_field('DELETE') }}
             {{ csrf_field() }}
             <a href="#" class="${btnclass} btn-warning" title="{{ __('messages.delete') }}" onclick="if (confirm('Are your sure?')) { document.querySelector('#del-form-${data}').submit(); }"><i class="fa fa-trash"></i></a>
         </form>`;
-        return viewurl + editurl + delurl;
+        return editurl + delurl;
     },
     className: "text-center"
 }
