@@ -44,6 +44,10 @@ mix.js('resources/assets/js/app.js', 'public/js')
     'public/js/jquery.bootstrap-duallistbox.min.js'
 )
 .copy(
+    'node_modules/admin-lte/plugins/pace/pace.min.css',
+    'public/css/pace.min.css'
+)
+.copy(
     'node_modules/admin-lte/plugins/pace/pace.min.js',
     'public/js/pace.min.js'
 )
