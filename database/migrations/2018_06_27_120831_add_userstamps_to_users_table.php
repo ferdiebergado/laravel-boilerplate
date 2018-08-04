@@ -17,9 +17,9 @@ class AddUserstampsToUsersTable extends Migration
             $table->unsignedInteger('created_by')->nullable()->default(null)->after('created_at');
             $table->unsignedInteger('updated_by')->nullable()->default(null)->after('updated_at');
             $table->unsignedInteger('deleted_by')->nullable()->default(null)->after('deleted_at');
-            $table->foreign('created_by')->references('id')->on('users');
-            $table->foreign('updated_by')->references('id')->on('users');
-            $table->foreign('deleted_by')->references('id')->on('users');
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('updated_by')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('deleted_by')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

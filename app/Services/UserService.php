@@ -17,7 +17,7 @@ class UserService
     public function __construct(UserRepository $user)
     {
         $this->user = $user;
-        // $this->user->pushCriteria(new WithTrashedCriteria);
+        $this->user->pushCriteria(new WithTrashedCriteria);
     }
 
     public function list(Request $request)
@@ -46,6 +46,7 @@ class UserService
             return false;
         }
     }
+
     public function show($id)
     {
         return $this->user->findOrFail($id);
@@ -60,9 +61,12 @@ class UserService
     {
         $user = $this->user->findOrFail($id);
         if (empty($method)) {
-            $verified = ($request->filled('verified')) ? 1 : 0;
-            $active = ($request->filled('active')) ? 1 : 0;
-            $attributes = array_merge($request->only($this->user->getFillable()), ['verified' => $verified], ['active' => $active]);
+            $attributes = $request->only($this->user->getFillable());
+            if (auth()->user()->can('edit-users', $user)) {
+                $verified = ($request->filled('verified')) ? 1 : 0;
+                $active = ($request->filled('active')) ? 1 : 0;
+                $attributes = array_merge($attributes, ['verified' => $verified], ['active' => $active]);
+            }
             if (empty($request->password)) {
                 $attributes = array_except($attributes, 'password');
             }
@@ -84,18 +88,21 @@ class UserService
     public function delete($id)
     {
         $user = $this->user->findOrFail($id);
-        if (auth()->user()->id !== $id) {
-            DB::beginTransaction();
-            try {
-                if (LoginService::handleDelete($id)) {
-                    if ($user->delete()) {
+        if (auth()->user()->can('delete', $user)) {
+            if (auth()->user()->id != $id) {
+                DB::beginTransaction();
+                try {
+                    LoginService::handleDelete($id);
+                    if ($user->forceDelete()) {
                         DB::commit();
                         session()->flash('status', __('messages.deleted'));
                     }
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    session()->flash('errors', $e->getMessage());
                 }
-            } catch (\Exception $e) {
-                DB::rollback();
-                session()->flash('errors', $e->getMessage());
+            } else {
+                session()->flash('errors', __('messages.delete_self'));
             }
         }
     }

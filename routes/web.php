@@ -47,6 +47,7 @@ Route::name('admin.')->group(function () {
 
         Route::group(['middleware' => ['permission:edit-users', 'role:user-manager,administrator']], function () {
             Route::get('users/{id}/edit', 'UserController@edit')->name('users.edit');
+            Route::match(['PUT', 'PATCH'], 'users/{id}/{method}', 'UserController@update')->name('users.softupdate');
             Route::match(['PUT', 'PATCH'], 'users/{id}', 'UserController@update')->name('users.update');
         });
 
