@@ -42,7 +42,7 @@ class RequestCriteria extends Criteria
      */
     protected function getTableColumns($model)
     {
-        return Cache::remember('tablecolumns_'.get_class($model), 60, function () use ($model) {
+        return Cache::remember('tablecolumns_'.get_class($model), 30, function () use ($model) {
             return $model->getConnection()->getSchemaBuilder()->getColumnListing($model->getTable());
         });
     }
